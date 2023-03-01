@@ -15,7 +15,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 /** Класс Player реализующий функции плеера
  * @author Владислав Шадрин
- * @author Иван Клюшин
  * @version 1.1
  */
 
@@ -55,15 +54,13 @@ public class Player {
     /** Поле для поддержки отрисовки главного меню */
     private static boolean openApp = true;
 
-    private static boolean songFromInternet = false;
-
     private static Scanner scMain = new Scanner(System.in);
 
     public Player() throws IOException {
     }
 
     /** Метод создания списка всех композиций из папки с музыкой
-     * @author Иван Клюшин
+     * @author Владислав Шадрин
      * @return возвращает список всех композиций в папке с музыкой
      */
 
@@ -88,7 +85,7 @@ public class Player {
     }
 
     /** Метод, реализующий выбор композиции из списка
-     * @author Иван Клюшин
+     * @author Владислав Шадрин
      */
     public void choiceOfMusic() {
         try {
@@ -96,7 +93,7 @@ public class Player {
                 createListOfMusic();
             }
 
-            System.out.println("Выберите песню: ");
+            System.out.println("\nВыберите песню: ");
             for (int i = 0; i < lst.toArray().length; i++) {
                 System.out.println((i + 1) + ". " + lst.get(i));
             }
@@ -212,7 +209,7 @@ public class Player {
     }
 
     /** Метод запуска следующей композиции из списка
-     * @author Иван Клюшин
+     * @author Владислав Шадрин
      */
     public void nextMusic() throws UnsupportedAudioFileException, LineUnavailableException, IOException, JavaLayerException {
         stop();
@@ -225,7 +222,7 @@ public class Player {
     }
 
     /** Метод запуска предыдущей композиции из списка
-     * @author Иван Клюшин
+     * @author Владислав Шадрин
      */
     public void previousMusic() throws UnsupportedAudioFileException, LineUnavailableException, IOException, JavaLayerException {
         stop();
@@ -235,6 +232,12 @@ public class Player {
         filePath = "music\\" + lst.get(numberOfMusic - 2);
         numberOfMusic--;
         createPlayer();
+    }
+
+    public void searchMusicFromInternet() throws UnsupportedAudioFileException, LineUnavailableException, IOException, JavaLayerException {
+        System.out.println("\nВведите название песни или исполнителя: ");
+        new SearchMusicFromInternet();
+        flag = true;
     }
 
     /** Метод выполнения выбранного действия из метода menu
@@ -254,7 +257,6 @@ public class Player {
                 int minutes = (int) (clip.getMicrosecondLength() / 1000000 / 60);
                 int seconds = (int) (clip.getMicrosecondLength() / 1000000 % 60);
                 System.out.println("Введите время через пробел (" + 0 + " " + 0 +
-//                        ", " + minutes + " " + seconds + " " + clip.getMicrosecondLength() + " " + (minutes * 1000000 * 60 + seconds * 1000000) +  ")");
                         ", " + minutes + " " + seconds + ")");
                 int c1 = scMain.nextInt();
                 int c2 = scMain.nextInt();
@@ -272,9 +274,7 @@ public class Player {
                 choiceOfMusic();
                 break;
             case 7:
-                System.out.println("Введите название песни или исполнителя: ");
-                new SearchMusicFromInternet();
-                flag = true;
+                searchMusicFromInternet();
                 break;
             case 8:
                 stop();
